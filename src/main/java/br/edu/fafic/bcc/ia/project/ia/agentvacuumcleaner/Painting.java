@@ -14,16 +14,19 @@ import java.util.Random;
 public class Painting {
     
     private boolean dirty;
+    private int identifier;
 
     public Painting(boolean dirty) {
         this.dirty = dirty;
+        this.identifier = 0;
     }
 
     public Painting() {
         this.setDirty();
+        this.identifier = 0;
     }
 
-    public boolean isirty() {
+    public boolean isDirty() {
         return dirty;
     }
 
@@ -36,10 +39,21 @@ public class Painting {
         this.dirty = r.nextBoolean();
     }
 
+    public int getIdentifier() {
+        return identifier;
+    }
+
+    public void setIdentifier(int identifier) {
+        this.identifier = identifier;
+    }
+
     @Override
     public String toString() {
-        return "Painting{" + "dirty=" + dirty + '}';
+        String state = (this.isDirty() ? "Dirty" : "Clean");
+        return "Painting{" + "ID=" + identifier + ", State=" + state + '}';
     }
+    
+    
     
     
     

@@ -16,7 +16,5 @@ public class Agent {
     private Environment environment;
     private int position;
     
-    public cleanner(){
-        
-    }
+   
 }
