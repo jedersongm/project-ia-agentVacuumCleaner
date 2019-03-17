@@ -13,6 +13,8 @@ package br.edu.fafic.bcc.ia.project.ia.agentvacuumcleaner;
  */
 public class Agent {
 
+    private Environment environment;
+    private int position;
     
     public cleanner(){
         

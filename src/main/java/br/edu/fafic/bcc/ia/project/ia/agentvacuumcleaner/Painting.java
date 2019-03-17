@@ -35,6 +35,12 @@ public class Painting {
         Random r = new Random();
         this.dirty = r.nextBoolean();
     }
+
+    @Override
+    public String toString() {
+        return "Painting{" + "dirty=" + dirty + '}';
+    }
+    
     
     
 }
