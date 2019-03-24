@@ -29,5 +29,28 @@ public class Memory {
         this.memory = memory;
     }
     
+    public boolean isCrescent(int position){
+        
+        int n = this.memory.size();
+        
+        while(this.memory.get(n).getAction() != 1){
+            n--;
+        }
+        return this.memory.get(n).getPerception().getIdentifier() < position;
+    }
     
+    public void updateMemory(Perception p, int action){
+        this.memory.add(new MemoryUnit(p, action));
+    }
+    
+    public void updateIdMemory(){
+        
+       for(MemoryUnit mu : this.memory){
+           Perception p = mu.getPerception();
+           int id = p.getIdentifier() + 1;
+           p.setIdentifier(id);
+           mu.setPerception(p);
+       }
+    }
 }
+ 

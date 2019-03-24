@@ -16,12 +16,12 @@ import java.util.Random;
 public class Environment {
 
     private Painting[] painting;
-    private final int size;
+    private int size;
     
     public Environment(Painting[] painting) {
         this.painting = painting;
         Random r = new Random();
-        this.size = r.nextInt(100)+1;
+        this.size = r.nextInt(30)+1;
     }
 
     public Environment() {
@@ -34,11 +34,26 @@ public class Environment {
     }
 
     public Painting[] getPainting() {
-        return painting;
+        return this.painting;
     }
 
     public void setPainting(Painting[] painting) {
         this.painting = painting;
+    }
+
+    public int getSize() {
+        return this.size;
+    }
+    
+    public void printEnviroment(int position){
+        
+        for(int i = 0; i < size;i++){
+            System.out.print(i == position ? "[ O ]" : "[ "+ this.painting[i].getIdentifier() +" ]");
+        }
+        System.out.println("\n");
+        for(int i = 0; i < size;i++){
+            System.out.print(this.painting[i].isDirty() ? "[ X ]" : "[ _ ]");
+        }
     }
 
     
