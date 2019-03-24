@@ -44,7 +44,7 @@ public class Agent {
         this.sizeEnv = sizeEnv;
     }
     
-    public void init(Environment environment, Memory memory){
+    public void init(Environment environment){
         Random r = new Random();
         int cont = 0;
         setPosition(r.nextInt(environment.getSize()));
@@ -123,7 +123,7 @@ public class Agent {
         
         environment.printEnviroment(position);
         
-        int n = bestAction(this.position);
+        int n = bestAction(this.position, environment);
           
         switch(n){        
             case 0: clear(environment.getPainting()[this.position]);
@@ -135,13 +135,22 @@ public class Agent {
         action(environment);
     }
 
-    private int bestAction(int position) {
+    private int bestAction(int position, Environment environment) {
         
         if(this.memory.getMemory().get(this.memory.getMemory().size()-1).getAction() == 2){
             return 1;
         }
+        if((position == 0 || position == this.sizeEnv-1) && isAllClean()) return 2;
+        
+        if(environment.getPainting()[position].isDirty()) return 0;
         
         return 1;
+    }
+    
+    private boolean isAllClean( ){        
+        if(this.memory.isCrescent(position)){
+            return this.memory.idIsCleanDesc(position);
+        }else return this.memory.idIsClean(position);        
     }
    
 }

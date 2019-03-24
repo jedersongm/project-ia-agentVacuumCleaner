@@ -52,5 +52,35 @@ public class Memory {
            mu.setPerception(p);
        }
     }
+    
+    public boolean idIsClean(int id){
+        int n = memory.size()-1;
+        
+        while(memory.get(n).getAction() != 2){
+            if(memory.get(n).getAction() == 1 && memory.get(n).getPerception().equals(new Perception(id, false)))
+                return (true && idIsClean(id - 1));
+            n--;
+        }
+        return false;
+    }
+    
+    public boolean idIsCleanDesc(int id){
+        int n = memory.size()-1;
+        
+        while(memory.get(n).getAction() != 2){
+            if(memory.get(n).getAction() == 1 && memory.get(n).getPerception().equals(new Perception(id, false)))
+                return (true && idIsClean(id + 1));
+            n--;
+        }
+        return false;
+    }
+    
+    public boolean noExistNoop(){
+        
+        for(MemoryUnit mu: memory){
+            if(mu.getAction() == 2) return false;
+        }
+        return true;
+    }
 }
  
