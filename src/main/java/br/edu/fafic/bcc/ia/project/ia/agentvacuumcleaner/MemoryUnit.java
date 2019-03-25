@@ -41,6 +41,11 @@ public class MemoryUnit {
     public void setAction(int action) {
         this.action = action;
     }
+
+    @Override
+    public String toString() {
+        return "MemoryUnit{ " +perception.toString() + ", action=" + action + '}';
+    }
     
     
 }

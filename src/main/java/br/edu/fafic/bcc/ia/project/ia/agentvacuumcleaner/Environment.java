@@ -15,30 +15,30 @@ import java.util.Random;
  */
 public class Environment {
 
-    private Painting[] painting;
+    private Painting[] paintings;
     private int size;
     
     public Environment(Painting[] painting) {
-        this.painting = painting;
+        this.paintings = painting;
         Random r = new Random();
         this.size = r.nextInt(30)+1;
     }
 
     public Environment() {
         Random r = new Random();
-        this.size = r.nextInt(100)+1;
-        this.painting = new Painting[this.size];
+        this.size = r.nextInt(30)+1;
+        this.paintings = new Painting[size];
         for(int i = 0; i < this.size; i++){
-            this.painting[i].setDirty();            
+            this.paintings[i] = new Painting();
         }
     }
 
-    public Painting[] getPainting() {
-        return this.painting;
+    public Painting[] getPaintings() {
+        return this.paintings;
     }
 
-    public void setPainting(Painting[] painting) {
-        this.painting = painting;
+    public void setPaintings(Painting[] painting) {
+        this.paintings = painting;
     }
 
     public int getSize() {
@@ -48,12 +48,13 @@ public class Environment {
     public void printEnviroment(int position){
         
         for(int i = 0; i < size;i++){
-            System.out.print(i == position ? "[ O ]" : "[ "+ this.painting[i].getIdentifier() +" ]");
+            System.out.print(i == position ? "[ A ]" : "[ "+ this.paintings[i].getIdentifier() +" ]");
         }
         System.out.println("\n");
-        for(int i = 0; i < size;i++){
-            System.out.print(this.painting[i].isDirty() ? "[ X ]" : "[ _ ]");
+        for(int i = 0; i < size; i++){
+            System.out.print(this.paintings[i].isDirty() ? "[ X ]" : "[ _ ]");
         }
+        System.out.println("\n");
     }
 
     

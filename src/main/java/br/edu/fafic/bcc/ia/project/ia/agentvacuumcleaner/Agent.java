@@ -23,7 +23,7 @@ public class Agent {
             
         this.position = 0;
         this.sizeEnv = 0;
-        this.memory =  new Memory(null);
+        this.memory =  new Memory();
     }
 
     
@@ -43,64 +43,90 @@ public class Agent {
     public void setSizeEnv(int sizeEnv){
         this.sizeEnv = sizeEnv;
     }
+
+    public Memory getMemory() {
+        return memory;
+    }
+
+    public void setMemory(Memory memory) {
+        this.memory = memory;
+    }
+    
+    
     
     public void init(Environment environment){
         Random r = new Random();
         int cont = 0;
         setPosition(r.nextInt(environment.getSize()));
-        
-        Painting[] quadros = environment.getPainting();
+        environment.printEnviroment(position);
+        Painting[] quadros = environment.getPaintings();
           
-        while(quadros[position-1] != null){
+        while(position != 0){
             cont++;
-            if(quadros[position].isDirty())
+            if(quadros[position].isDirty()){
                 clear(quadros[position]);
-            toLeft();
+            }                
+            toLeft(environment);
             for(int i = 0; i <= cont; i++){
                 quadros[position+i].setIdentifier(i);           
-            }            
+            }
+            this.memory.updateIdMemory();
         }     
-        this.memory.updateIdMemory();
-        environment.setPainting(quadros);
-        setSizeEnv(sizeEnvironment(environment));
+        
+        environment.setPaintings(quadros);        
+        environment.printEnviroment(position);
+        int tam = sizeEnvironment(environment);
+        System.out.println("Tam: "+tam);
+        this.setSizeEnv(tam);
+        memory.printMemory();
     }
     
     public int sizeEnvironment(Environment environment){
         int cont = 0;
-        
-        Painting[] quadros = environment.getPainting();
-        
-        do{
+        this.memory.printMemory();
+        environment.printEnviroment(position);
+        Painting[] quadros = environment.getPaintings();
+                
+        while(cont < environment.getSize()){
+            quadros[cont].setIdentifier(cont);
             if(quadros[cont].isDirty()){
                 clear(quadros[cont]);
             }
-            
+            if(cont != environment.getSize()-1)
+                toRight(environment);
             cont++;
-        }while(quadros[position+1] != null);
+        }
         
-        environment.setPainting(quadros);
+        environment.setPaintings(quadros);
+        environment.printEnviroment(position);
        
         return cont++;
     }
     
-    public void toMove(){        
+    public void toMove(Environment environment){        
        
-        if(position == 0 || memory.isCrescent(position)){
-            toRight();
-        } else toLeft();
+        if(position == 0)
+            toRight(environment);
+        if(position == getSizeEnv()-1)
+            toLeft(environment);
+        if(memory.isCrescent(position))
+            toRight(environment);        
+        if(memory.isCrescent(position) == false)
+             toLeft(environment);
         
     }
     
-    private void toRight() {
-       System.out.println("Movendo "+ (this.position-1) + " <== "+ this.position + "\n");
-       this.memory.updateMemory(new Perception(position, false), 1);
+    private void toRight(Environment environment) {
+       System.out.println("Movendo "+ (this.position) + " ==> "+ (this.position+1) + "\n");
+       this.memory.updateMemory(new Perception(environment.getPaintings()[position].getIdentifier(), false), 1);
        this.position++;
     }
     
-    private void toLeft() {
+    private void toLeft(Environment environment) {
         
-        System.out.println("Movendo "+ this.position + "==> "+ (this.position+1) + "\n");
-        this.memory.updateMemory(new Perception(position, false), 1);
+        System.out.println("Movendo "+ (this.position-1) + " <== "+ (this.position) + "\n");
+        this.memory.updateMemory(new Perception(environment.getPaintings()[position].getIdentifier(), false), 1);
+        
         this.position--;
     }
     
@@ -108,13 +134,14 @@ public class Agent {
     public void clear(Painting painting){
         
         System.out.println("Limpando: "+painting.getIdentifier() + "\n");
-        this.memory.updateMemory(new Perception(position, true), 0);
+        this.memory.updateMemory(new Perception(painting.getIdentifier(), true), 0);
         painting.setDirty(false);
         
     }
     
-    public void noop() throws InterruptedException{
+    public void noop(Environment environment) throws InterruptedException{
         System.out.println("StandBy...\n");
+        this.memory.updateMemory(new Perception(environment.getPaintings()[position].getIdentifier(), false), 2);
         Thread.sleep(1000);
         
     }
@@ -122,27 +149,31 @@ public class Agent {
     public void action(Environment environment) throws InterruptedException{
         
         environment.printEnviroment(position);
-        
+        System.out.println("Actioon");
         int n = bestAction(this.position, environment);
           
         switch(n){        
-            case 0: clear(environment.getPainting()[this.position]);
+            case 0: clear(environment.getPaintings()[this.position]);
                 break;
-            case 1: toMove();
+            case 1: toMove(environment);
                 break;
-            case 2: noop();                
+            case 2: noop(environment);                
         }
         action(environment);
     }
 
     private int bestAction(int position, Environment environment) {
-        
-        if(this.memory.getMemory().get(this.memory.getMemory().size()-1).getAction() == 2){
+        memory.printMemory();
+         if(this.memory.getMemory().get(this.memory.getMemory().size()-1).getAction() == 2){
             return 1;
         }
-        if((position == 0 || position == this.sizeEnv-1) && isAllClean()) return 2;
         
-        if(environment.getPainting()[position].isDirty()) return 0;
+        //if((position == 0 || position == sizeEnv-1) && isAllClean()) return 2;
+        if((position == 0 || position == sizeEnv-1)) return 2;
+        
+       
+                
+        if(environment.getPaintings()[position].isDirty()) return 0;
         
         return 1;
     }

@@ -60,6 +60,12 @@ public class Perception {
         }
         return true;
     }
+
+    @Override
+    public String toString() {
+        String st = (isDirty() ? "Sujo":"Limpo");
+        return "[" + identifier + ","+st+"]";
+    }
     
     
     
