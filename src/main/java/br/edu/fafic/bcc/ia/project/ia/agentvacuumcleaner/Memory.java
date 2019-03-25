@@ -62,7 +62,7 @@ public class Memory {
     public boolean idIsClean(int id){
         int n = unitsMemory.size()-1;
         
-        while(unitsMemory.get(n).getAction() != 2 || n == 0){
+        while(n == 0 || unitsMemory.get(n).getAction() != 2){
             if(unitsMemory.get(n).getAction() == 1 && unitsMemory.get(n).getPerception().equals(new Perception(id, false)))
                 return (true && idIsClean(id - 1));
             n--;

@@ -75,8 +75,7 @@ public class Agent {
         
         environment.setPaintings(quadros);        
         environment.printEnviroment(position);
-        int tam = sizeEnvironment(environment);
-        System.out.println("Tam: "+tam);
+        int tam = sizeEnvironment(environment);        
         this.setSizeEnv(tam);
         memory.printMemory();
     }
@@ -166,13 +165,10 @@ public class Agent {
         memory.printMemory();
          if(this.memory.getMemory().get(this.memory.getMemory().size()-1).getAction() == 2){
             return 1;
-        }
+        }       
         
-        //if((position == 0 || position == sizeEnv-1) && isAllClean()) return 2;
-        if((position == 0 || position == sizeEnv-1)) return 2;
-        
-       
-                
+        if((position == 0 || position == sizeEnv-1)) return 2;      
+                       
         if(environment.getPaintings()[position].isDirty()) return 0;
         
         return 1;
