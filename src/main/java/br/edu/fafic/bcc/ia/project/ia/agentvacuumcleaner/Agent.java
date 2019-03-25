@@ -116,14 +116,14 @@ public class Agent {
     }
     
     private void toRight(Environment environment) {
-       System.out.println("Movendo "+ (this.position) + " ==> "+ (this.position+1) + "\n");
+       System.out.println("Movendo "+ (environment.getPaintings()[position].getIdentifier()) + " ==> "+ (environment.getPaintings()[position].getIdentifier()+1) + "\n");
        this.memory.updateMemory(new Perception(environment.getPaintings()[position].getIdentifier(), false), 1);
        this.position++;
     }
     
     private void toLeft(Environment environment) {
         
-        System.out.println("Movendo "+ (this.position-1) + " <== "+ (this.position) + "\n");
+        System.out.println("Movendo "+ (environment.getPaintings()[position].getIdentifier()-1) + " <== "+ (environment.getPaintings()[position].getIdentifier()) + "\n");
         this.memory.updateMemory(new Perception(environment.getPaintings()[position].getIdentifier(), false), 1);
         
         this.position--;
